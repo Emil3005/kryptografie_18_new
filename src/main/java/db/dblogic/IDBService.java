@@ -48,9 +48,9 @@ public interface IDBService {
 
     Channel getChannel(String participantA, String participantB);
 
-    String getOneParticipantType(String participantName);
+    String getParticipantType(String participantName);
 
-    Participant getOneParticipant(String participantName);
+    Participant getParticipant(String participantName);
 
     // Check for existence
 

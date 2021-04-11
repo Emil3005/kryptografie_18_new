@@ -26,7 +26,7 @@ public class Application {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        if (!DBService.instance.participantExists("msa")) DBService.instance.createInitialValues();
+        if (!DBService.instance.participantExists("msa")) DBService.instance.init();
     }
 
     private void startupGUI(){

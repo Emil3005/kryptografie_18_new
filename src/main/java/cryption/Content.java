@@ -139,8 +139,8 @@ public class Content {
         if (part1name.equals(part2name))
             Config.instance.textArea.info(String.format(part1name + " and "+part2name+" are identical - cannot create channel on itself"));
 
-        Participant instanceFirstParticipant = DBService.instance.getOneParticipant(part1name);
-        Participant instanceSecondParticipant = DBService.instance.getOneParticipant(part2name);
+        Participant instanceFirstParticipant = DBService.instance.getParticipant(part1name);
+        Participant instanceSecondParticipant = DBService.instance.getParticipant(part2name);
 
         Channel channel = new Channel(channelName, instanceFirstParticipant, instanceSecondParticipant);
         Config.instance.textArea.info(String.format("channel " + channelName + " from "+ part1name + " to "+part2name+" successfully created"));
@@ -166,7 +166,7 @@ public class Content {
             Config.instance.textArea.info(String.format("unknown channel "+channelName));
         }
 
-        if (!DBService.instance.removeChannel(channelName)) {
+        if (!DBService.instance.deleteChannel(channelName)) {
             Config.instance.textArea.info("Something went wrong");
         }
         else{
@@ -177,7 +177,7 @@ public class Content {
 
 
     public void intrudeChannel(String channelName, String participant){
-        Participant intruder = DBService.instance.getOneParticipant(participant);
+        Participant intruder = DBService.instance.getParticipant(participant);
 
         if (intruder == null){
             Config.instance.textArea.info(String.format("intruder "+participant+" could not be found"));
@@ -196,8 +196,8 @@ public class Content {
 
 
     public void sendMessage(String message, String sender, String recipient, AlgorithmUsed algorithmUsed, String strKeyFile){
-        Participant senderPart = DBService.instance.getOneParticipant(sender);
-        Participant receiverPart = DBService.instance.getOneParticipant(recipient);
+        Participant senderPart = DBService.instance.getParticipant(sender);
+        Participant receiverPart = DBService.instance.getParticipant(recipient);
         Channel channel = DBService.instance.getChannel(sender, recipient);
         Date currentDate = new Date();
         long timestampLong = currentDate.getTime()/1000;

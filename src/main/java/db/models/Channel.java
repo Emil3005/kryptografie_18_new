@@ -25,7 +25,7 @@ public class Channel {
         eventBus.register(participantA);
         eventBus.register(participantB);
         if (Config.instance.intrudedChannels.containsKey(this.name)){
-            eventBus.register(DBService.instance.getOneParticipant(Config.instance.intrudedChannels.get(this.name)));
+            eventBus.register(DBService.instance.getParticipant(Config.instance.intrudedChannels.get(this.name)));
         }
     }
 
