@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+group 'dhbw'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    implementation 'com.google.code.gson:gson:2.8.6'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task build_jar(type: Jar) {
+    project.archivesBaseName = "rsa"
+
+    manifest {
+        attributes["Main-Class"] = "RSA"
+    }
+
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}

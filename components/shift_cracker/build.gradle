@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+}
+
+group 'dhbw'
+
+repositories {
+    mavenCentral()
+}
+
+task build_jar(type: Jar) {
+    project.archivesBaseName = "shift_cracker"
+
+    manifest {
+        attributes["Main-Class"] = "ShiftCracker"
+    }
+
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
