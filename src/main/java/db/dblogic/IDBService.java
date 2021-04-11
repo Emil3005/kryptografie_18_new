@@ -6,10 +6,10 @@
 
 package db.dblogic;
 
-import db.models.Channel;
-import db.models.Message;
-import db.models.Participant;
-import db.models.PostboxMessage;
+import db.models.channel.Channel;
+import db.models.message.Message;
+import db.models.user.User;
+import db.models.message.MessagePostBox;
 
 import java.util.List;
 
@@ -31,13 +31,13 @@ public interface IDBService {
 
     void insertParticipant(String name, String type);
 
-    void insertParticipant(Participant participant);
+    void insertParticipant(User user);
 
     void insertChannel(Channel channel);
 
     void insertChannel(String name, String participantA, String participantB);
 
-    void insertPostboxMessage(PostboxMessage postboxMessage);
+    void insertPostboxMessage(MessagePostBox messagePostBox);
 
     void insertPostboxMessage(String participantSender, String participantReceiver, String message);
 
@@ -50,7 +50,11 @@ public interface IDBService {
 
     String getParticipantType(String participantName);
 
+<<<<<<< HEAD
     Participant getParticipant(String participantName);
+=======
+    User getOneParticipant(String participantName);
+>>>>>>> a57cd88f43bddda1db163989e3aac6588639ac30
 
     // Check for existence
 

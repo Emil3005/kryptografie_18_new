@@ -4,27 +4,29 @@
  * All rights reserved
  */
 
-package db.models;
+package db.models.user;
 
 import com.google.common.eventbus.Subscribe;
-import db.models.participant.IParticipantType;
-import db.models.participant.Intruder;
+import db.models.message.MessageEventBus;
+import db.models.user.userTypes.IUserType;
+import db.models.user.userTypes.Intruder;
+import db.models.user.userTypes.UserType;
 
-public class Participant {
+public class User {
     private String name;
-    private IParticipantType type;
+    private IUserType type;
 
-    public Participant(String name, String input){
+    public User(String name, String input){
         this.name = name;
         if (input.equals("intruder")) {
             this.type = new Intruder();
         } else{
-            this.type = new db.models.participant.Participant(this);
+            this.type = new UserType(this);
         }
     }
 
     @Subscribe
-    public void receiveMessage(BusMessage message){
+    public void receiveMessage(MessageEventBus message){
         type.receiveMessage(message);
     }
 

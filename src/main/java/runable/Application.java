@@ -14,30 +14,26 @@ public class Application {
     public static void main(String[] args) {
 
         Application app = new Application();
-        app.init();
+        app.setup();
         javafx.application.Application.launch(GUI.class);
     }
 
-    public void init(){
+    public void setup(){
         Config.instance.textArea.setUseParentHandlers(false);
         dbService.setupConnection();
         try {
             HSQLDB.instance.setupDatabase();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         if (!DBService.instance.participantExists("msa")) DBService.instance.init();
     }
 
-    private void startupGUI(){
-
-    }
+    private void startupGUI(){}
 
     private void close(){
         dbService.shutdown();
     }
 
-    private void initNetworks(){
-
-    }
+    private void initNetworks(){}
 }

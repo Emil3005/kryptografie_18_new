@@ -1,4 +1,4 @@
-package cryption;
+package cryption.verify;
 
 import config.Config;
 

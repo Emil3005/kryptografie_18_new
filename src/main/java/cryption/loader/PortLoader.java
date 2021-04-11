@@ -1,6 +1,6 @@
-package cryption;
+package cryption.loader;
 
-import cryption.Content;
+import content.Content;
 
 import java.io.File;
 import java.io.InvalidObjectException;

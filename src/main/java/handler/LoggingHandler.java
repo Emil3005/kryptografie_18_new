@@ -19,15 +19,15 @@ public class LoggingHandler {
 
 
     public void switchHandlerForLogging(){
-        if (enabled) {
+        if (!enabled) {
+            enabled = true;
+            Config.instance.textArea.info("Logging has been enabled");
+        } else {
             enabled = false;
             if (handler != null){
                 logger.removeHandler(handler);
             }
-            Config.instance.textArea.info("Logging disabled");
-        } else {
-            enabled = true;
-            Config.instance.textArea.info("Logging enabled");
+            Config.instance.textArea.info("Logging has been disabled");
         }
     }
 
@@ -44,7 +44,7 @@ public class LoggingHandler {
             handler.setLevel(Level.FINE);
             logger.addHandler(handler);
         } catch (IOException e) {
-            Config.instance.textArea.info("Problems creating logfile");
+            Config.instance.textArea.info("Error occurred during logFile creation");
         }
     }
 
