@@ -1,5 +1,5 @@
 package config;
 
-public enum AlgorithmUsed {
+public enum AlgorithmEnum {
     SHIFT, RSA
 }

@@ -4,11 +4,13 @@
  * All rights reserved
  */
 
-package cryption;
+package content;
 
+import cryption.loader.PortLoader;
+import cryption.verify.VerifyJar;
 import cryption.commandPattern.RSACommand;
 import cryption.commandPattern.ShiftCommand;
-import config.AlgorithmUsed;
+import config.AlgorithmEnum;
 import config.Config;
 import db.dblogic.enums.DBService;
 import db.models.message.MessageEventBus;
@@ -31,7 +33,7 @@ public class Content {
     String strJarFileName;
     String strClassName;
 
-    public String encrypt(String message, AlgorithmUsed algorithm, String strKeyFile) {
+    public String encrypt(String message, AlgorithmEnum algorithm, String strKeyFile) {
         String result = null;
         keyFile = new File(Config.instance.keyFiles + strKeyFile);
 
@@ -63,14 +65,14 @@ public class Content {
         return result;
     }
 
-    public String decrypt(String message, AlgorithmUsed algorithmUsed, String strKeyFile) {
+    public String decrypt(String message, AlgorithmEnum algorithmEnum, String strKeyFile) {
         String result = null;
         keyFile = new File(Config.instance.keyFiles + strKeyFile);
         if (!keyFile.exists()) {
             Config.instance.textArea.info("KeyFile " + strKeyFile + " does not exist");
         } else {
-            Config.instance.loggingHandler.createLogfile(algorithmUsed.toString(), "decrypt");
-            checkAlgorithm(algorithmUsed);
+            Config.instance.loggingHandler.createLogfile(algorithmEnum.toString(), "decrypt");
+            checkAlgorithm(algorithmEnum);
             if (VerifyJar.verified(strJarFileName)) {
                 Config.instance.textArea.info("jar could not be verified - not loading corrupted jar");
             } else {
@@ -195,7 +197,7 @@ public class Content {
 
 
 
-    public void sendMessage(String message, String sender, String recipient, AlgorithmUsed algorithmUsed, String strKeyFile){
+    public void sendMessage(String message, String sender, String recipient, AlgorithmEnum algorithmEnum, String strKeyFile){
         User senderPart = DBService.instance.getOneParticipant(sender);
         User receiverPart = DBService.instance.getOneParticipant(recipient);
         Channel channel = DBService.instance.getChannel(sender, recipient);
@@ -207,24 +209,24 @@ public class Content {
             Config.instance.textArea.info(String.format("no valid channel from "+sender+" to "+recipient));
         }
 
-        String encrypted = encrypt(message, algorithmUsed, strKeyFile);
+        String encrypted = encrypt(message, algorithmEnum, strKeyFile);
 
-        Message dbMessage = new Message(senderPart, receiverPart, algorithmUsed.toString().toLowerCase(Locale.ROOT), strKeyFile, timestamp, message, encrypted);
-        channel.send(new MessageEventBus(encrypted, senderPart, receiverPart, algorithmUsed, strKeyFile));
+        Message dbMessage = new Message(senderPart, receiverPart, algorithmEnum.toString().toLowerCase(Locale.ROOT), strKeyFile, timestamp, message, encrypted);
+        channel.send(new MessageEventBus(encrypted, senderPart, receiverPart, algorithmEnum, strKeyFile));
 
         DBService.instance.insertMessage(dbMessage);
         Config.instance.textArea.info(recipient + " received new Message");
     }
 
 
-    public void checkAlgorithm(AlgorithmUsed algorithm){
-        if (algorithm.equals(AlgorithmUsed.RSA)) {
+    public void checkAlgorithm(AlgorithmEnum algorithm){
+        if (algorithm.equals(AlgorithmEnum.RSA)) {
             strJarFileName = "rsa" + ".jar";
         } else {
             strJarFileName = "shift" + ".jar";
         }
 
-        if (algorithm.equals(AlgorithmUsed.RSA)) {
+        if (algorithm.equals(AlgorithmEnum.RSA)) {
             strClassName = "RSA";
         } else {
             strClassName = "Shift";

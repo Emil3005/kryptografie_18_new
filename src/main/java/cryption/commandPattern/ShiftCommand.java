@@ -1,8 +1,8 @@
 package cryption.commandPattern;
 
 import config.Config;
-import cryption.PortLoader;
-import cryption.VerifyJar;
+import cryption.loader.PortLoader;
+import cryption.verify.VerifyJar;
 
 import java.io.InvalidObjectException;
 import java.lang.reflect.InvocationTargetException;
