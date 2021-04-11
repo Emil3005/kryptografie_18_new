@@ -1,23 +1,25 @@
 package handler;
 
-import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 
 import java.util.logging.LogRecord;
 
-import static javafx.application.Platform.*;
+import static javafx.application.Platform.runLater;
 
 public class TextAreaHandler extends java.util.logging.Handler {
 
     private TextArea textArea;
 
-    public TextAreaHandler (TextArea textArea){
+    public TextAreaHandler(TextArea textArea) {
         this.textArea = textArea;
     }
 
     @Override
     public void publish(LogRecord record) {
-        runLater(() -> {textArea.appendText(record.getMessage()); textArea.appendText("\n");});
+        runLater(() -> {
+            textArea.appendText(record.getMessage());
+            textArea.appendText("\n");
+        });
     }
 
     @Override

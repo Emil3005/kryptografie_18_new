@@ -11,7 +11,7 @@ public class MessageEventBus {
     private AlgorithmEnum algorithm;
     private String keyFile;
 
-    public MessageEventBus(String message, User sender, User recipient, AlgorithmEnum algorithm, String keyFile){
+    public MessageEventBus(String message, User sender, User recipient, AlgorithmEnum algorithm, String keyFile) {
         this.message = message;
         this.sender = sender;
         this.recipient = recipient;

@@ -4,8 +4,8 @@ import config.Config;
 import db.dblogic.IDBService;
 import db.models.channel.Channel;
 import db.models.message.Message;
-import db.models.user.User;
 import db.models.message.MessagePostBox;
+import db.models.user.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,7 +50,7 @@ public enum DBService implements IDBService {
         try {
             db.update(String.format("INSERT INTO messages" +
                     "(PARTICIPANT_FROM_ID, PARTICIPANT_TO_ID, PLAIN_MESSAGE, ALGORITHM_ID, ENCRYPTED_MESSAGE, KEYFILE, TIMESTAMP)" +
-                    "VALUES ("+ senderID +","+ receiverID +",'"+ message +"',"+ algorithmID +",'"+ encryptedMessage +"','"+ keyFile +"',"+ timeStamp +")"));
+                    "VALUES (" + senderID + "," + receiverID + ",'" + message + "'," + algorithmID + ",'" + encryptedMessage + "','" + keyFile + "'," + timeStamp + ")"));
         } catch (SQLException exception) {
             Config.instance.textArea.info(exception.toString());
         }
@@ -70,7 +70,7 @@ public enum DBService implements IDBService {
     public void insertAlgorithm(String algorithm) {
         if (getAlgorithmID(algorithm) < 0) {
             try {
-                db.update(String.format("INSERT INTO algorithms (name) VALUES ('"+ algorithm +"')"));
+                db.update(String.format("INSERT INTO algorithms (name) VALUES ('" + algorithm + "')"));
             } catch (SQLException exception) {
                 Config.instance.textArea.info(exception.toString());
             }
@@ -82,7 +82,7 @@ public enum DBService implements IDBService {
         type = type.toLowerCase();
         if (getTypeID(type) < 0) {
             try {
-                db.update(String.format("INSERT INTO types (name) VALUES ('"+ type +"')"));
+                db.update(String.format("INSERT INTO types (name) VALUES ('" + type + "')"));
             } catch (SQLException exception) {
                 Config.instance.textArea.info(exception.toString());
             }
@@ -95,7 +95,7 @@ public enum DBService implements IDBService {
         int id = getTypeID(type);
 
         try {
-            db.update(String.format("INSERT INTO participants (name,type_id) VALUES ('"+ name +"', "+id+")"));
+            db.update(String.format("INSERT INTO participants (name,type_id) VALUES ('" + name + "', " + id + ")"));
             db.createTablePostbox(name);
         } catch (SQLException exception) {
             Config.instance.textArea.info(exception.toString());
@@ -109,15 +109,15 @@ public enum DBService implements IDBService {
 
     @Override
     public void insertChannel(String name, String participantA, String participantB) {
-       name = name.toLowerCase();
+        name = name.toLowerCase();
         int idA = getUserID(participantA);
         int idB = getUserID(participantB);
 
         try {
             db.update(String.format(
-                            "INSERT INTO channel" +
+                    "INSERT INTO channel" +
                             "(name,participant_01,participant_02)" +
-                            "VALUES ('"+ name +"', "+ idA +", "+ idB +")"));
+                            "VALUES ('" + name + "', " + idA + ", " + idB + ")"));
         } catch (SQLException exception) {
             Config.instance.textArea.info(exception.toString());
         }
@@ -141,13 +141,13 @@ public enum DBService implements IDBService {
         long timeStamp = Instant.now().getEpochSecond();
         try {
             db.update(String.format(
-                            "INSERT INTO postbox_%s" +
+                    "INSERT INTO postbox_%s" +
                             " (participant_from_id, message, timestamp)" +
-                                    " VALUES (%d, '%s', %d)",
-                            participantReceiver,
-                            participantFromID,
-                            message,
-                            timeStamp));
+                            " VALUES (%d, '%s', %d)",
+                    participantReceiver,
+                    participantFromID,
+                    message,
+                    timeStamp));
         } catch (SQLException exception) {
             Config.instance.textArea.info(exception.toString());
         }
@@ -213,7 +213,7 @@ public enum DBService implements IDBService {
         try {
             ResultSet resultSet = db.executeQuery(sql);
             if (!resultSet.next()) {
-                throw new SQLException("Channel between: "+ user1 +", "+ user2 +"not existing");
+                throw new SQLException("Channel between: " + user1 + ", " + user2 + "not existing");
             }
             channel = resultSet.getString("name");
             return new Channel(channel, getUser(user1), getUser(user2));
@@ -228,7 +228,7 @@ public enum DBService implements IDBService {
         int participantID2;
 
         try {
-            ResultSet resultSet = db.executeQuery(String.format("SELECT name, participant_01, participant_02 FROM channel WHERE name='"+ channel +"'"));
+            ResultSet resultSet = db.executeQuery(String.format("SELECT name, participant_01, participant_02 FROM channel WHERE name='" + channel + "'"));
             if (!resultSet.next()) {
                 throw new SQLException("No channel found with name: " + channel);
             }
@@ -242,7 +242,7 @@ public enum DBService implements IDBService {
     }
 
     public boolean deleteChannel(String channel) {
-        var sql = String.format("DELETE FROM channel WHERE name='"+ channel +"'");
+        var sql = String.format("DELETE FROM channel WHERE name='" + channel + "'");
 
         int i;
         try {
@@ -290,7 +290,7 @@ public enum DBService implements IDBService {
     @Override
     public boolean channelExists(String channel) {
         try {
-            ResultSet resultSet = db.executeQuery("SELECT name from channel where LOWER(name)='"+ channel.toLowerCase() +"'");
+            ResultSet resultSet = db.executeQuery("SELECT name from channel where LOWER(name)='" + channel.toLowerCase() + "'");
             if (!resultSet.next()) {
                 throw new SQLException();
             }
@@ -312,10 +312,10 @@ public enum DBService implements IDBService {
         String nameLowercase = name.toLowerCase();
         try {
 
-            ResultSet resultSet = db.executeQuery("SELECT ID from TYPES where name='"+ name + "'");
+            ResultSet resultSet = db.executeQuery("SELECT ID from TYPES where name='" + name + "'");
 
             if (!resultSet.next()) {
-                throw new SQLException("Type "+ nameLowercase + " not existing");
+                throw new SQLException("Type " + nameLowercase + " not existing");
             }
             return resultSet.getInt("ID");
         } catch (SQLException sqlException) {
@@ -326,9 +326,9 @@ public enum DBService implements IDBService {
 
     private int getUserID(String name) {
         try {
-            ResultSet resultSet = db.executeQuery("SELECT ID from PARTICIPANTS where name='"+ name +"'");
+            ResultSet resultSet = db.executeQuery("SELECT ID from PARTICIPANTS where name='" + name + "'");
             if (!resultSet.next()) {
-                throw new SQLException("Participant "+ name +" not existing");
+                throw new SQLException("Participant " + name + " not existing");
             }
             return resultSet.getInt("ID");
         } catch (SQLException sqlException) {
@@ -339,9 +339,9 @@ public enum DBService implements IDBService {
 
     private String getUserName(int participantID) {
         try {
-            ResultSet resultSet = db.executeQuery("SELECT name from participants where ID="+ participantID);
+            ResultSet resultSet = db.executeQuery("SELECT name from participants where ID=" + participantID);
             if (!resultSet.next()) {
-                throw new SQLException("No participant found for id "+ participantID);
+                throw new SQLException("No participant found for id " + participantID);
             }
             return resultSet.getString("name");
         } catch (SQLException exception) {
@@ -352,9 +352,9 @@ public enum DBService implements IDBService {
 
     private String getTypeName(int typeID) {
         try {
-            ResultSet resultSet = db.executeQuery(String.format("SELECT name from TYPES where ID="+ typeID +""));
+            ResultSet resultSet = db.executeQuery(String.format("SELECT name from TYPES where ID=" + typeID + ""));
             if (!resultSet.next()) {
-                throw new SQLException("No type found for ID "+ typeID);
+                throw new SQLException("No type found for ID " + typeID);
             }
             return resultSet.getString("name");
         } catch (SQLException exception) {
@@ -365,9 +365,9 @@ public enum DBService implements IDBService {
 
     private int getAlgorithmID(String algorithm) {
         try {
-            ResultSet resultSet = db.executeQuery(String.format("SELECT ID from ALGORITHMS where LOWER(name)=LOWER('"+ algorithm +"')"));
+            ResultSet resultSet = db.executeQuery(String.format("SELECT ID from ALGORITHMS where LOWER(name)=LOWER('" + algorithm + "')"));
             if (!resultSet.next()) {
-                throw new SQLException(("Algorithm "+ algorithm +" not existing"));
+                throw new SQLException(("Algorithm " + algorithm + " not existing"));
             }
             return resultSet.getInt("ID");
         } catch (SQLException sqlException) {
@@ -392,16 +392,16 @@ public enum DBService implements IDBService {
         insertAlgorithm("shift");
         insertAlgorithm("rsa");
 
-        insertUser("branch_hkg","normal");
-        insertUser("branch_wuh","normal");
-        insertUser("branch_cpt","normal");
-        insertUser("branch_syd","normal");
-        insertUser("branch_sfo","normal");
-        insertUser("msa","intruder");
+        insertUser("branch_hkg", "normal");
+        insertUser("branch_wuh", "normal");
+        insertUser("branch_cpt", "normal");
+        insertUser("branch_syd", "normal");
+        insertUser("branch_sfo", "normal");
+        insertUser("msa", "intruder");
 
-        insertChannel("hkg_wuh","branch_hkg","branch_wuh");
-        insertChannel("hkg_cpt","branch_hkg","branch_cpt");
-        insertChannel("cpt_syd","branch_cpt","branch_syd");
-        insertChannel("syd_sfo","branch_syd","branch_sfo");
+        insertChannel("hkg_wuh", "branch_hkg", "branch_wuh");
+        insertChannel("hkg_cpt", "branch_hkg", "branch_cpt");
+        insertChannel("cpt_syd", "branch_cpt", "branch_syd");
+        insertChannel("syd_sfo", "branch_syd", "branch_sfo");
     }
 }

@@ -1,5 +1,3 @@
-
-
 package db.models.user;
 
 import com.google.common.eventbus.Subscribe;
@@ -12,17 +10,17 @@ public class User {
     private String name;
     private IUserType type;
 
-    public User(String name, String input){
+    public User(String name, String input) {
         this.name = name;
         if (input.equals("intruder")) {
             this.type = new Intruder();
-        } else{
+        } else {
             this.type = new UserType(this);
         }
     }
 
     @Subscribe
-    public void receiveMessage(MessageEventBus message){
+    public void receiveMessage(MessageEventBus message) {
         type.receiveMessage(message);
     }
 

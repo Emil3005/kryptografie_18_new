@@ -1,11 +1,9 @@
-
-
 package db.dblogic;
 
 import db.models.channel.Channel;
 import db.models.message.Message;
-import db.models.user.User;
 import db.models.message.MessagePostBox;
+import db.models.user.User;
 
 import java.util.List;
 

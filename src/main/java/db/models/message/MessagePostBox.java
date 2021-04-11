@@ -1,4 +1,3 @@
-
 package db.models.message;
 
 import db.models.user.User;
@@ -9,7 +8,7 @@ public class MessagePostBox {
     private final String message;
     private final String timestamp;
 
-    public MessagePostBox(User userSender, User userReceiver, String message, String timestamp){
+    public MessagePostBox(User userSender, User userReceiver, String message, String timestamp) {
         this.userSender = userSender;
         this.userReceiver = userReceiver;
         this.message = message;

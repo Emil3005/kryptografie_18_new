@@ -11,12 +11,12 @@ public class LoggingHandler {
     Logger logger;
     Boolean enabled;
 
-    public LoggingHandler(){
+    public LoggingHandler() {
         logger = java.util.logging.Logger.getLogger("file");
         enabled = false;
     }
 
-     public void createLogfile(String algorithmType, String direction) {
+    public void createLogfile(String algorithmType, String direction) {
         if (!enabled) {
             return;
         }
@@ -25,7 +25,7 @@ public class LoggingHandler {
         }
         try {
             long date = new Date().getTime() / 1000;
-            handler = new FileHandler(String.format("log/"+ direction +"_"+ algorithmType +"_"+ date +".txt"));
+            handler = new FileHandler(String.format("log/" + direction + "_" + algorithmType + "_" + date + ".txt"));
             handler.setFormatter(new SimpleFormatter());
             handler.setLevel(Level.FINE);
             logger.addHandler(handler);
@@ -34,17 +34,17 @@ public class LoggingHandler {
         }
     }
 
-    public Logger getLogger(){
+    public Logger getLogger() {
         return logger;
     }
 
-    public void switchHandler(){
+    public void switchHandler() {
         if (!enabled) {
             enabled = true;
             Config.instance.textArea.info("Logging is enabled");
         } else {
             enabled = false;
-            if (handler != null){
+            if (handler != null) {
                 logger.removeHandler(handler);
             }
             Config.instance.textArea.info("Logging is disabled");

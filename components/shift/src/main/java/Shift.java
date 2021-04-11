@@ -10,22 +10,22 @@ public class Shift {
     private static Shift instance = new Shift();
     public Port port;
 
-    public Shift(){
+    public Shift() {
         port = new Port();
-    }
-
-    public String encryptRSA(String plain, int key, Logger logger){
-        CaesarCipher cipher = new CaesarCipher(key);
-        return cipher.encrypt(plain, logger);
-    }
-
-    public String decryptRSA(String encrypted, int key, Logger logger){
-        CaesarCipher cipher = new CaesarCipher(key);
-        return cipher.decrypt(encrypted, logger);
     }
 
     public static Shift getInstance() {
         return instance;
+    }
+
+    public String encryptRSA(String plain, int key, Logger logger) {
+        CaesarCipher cipher = new CaesarCipher(key);
+        return cipher.encrypt(plain, logger);
+    }
+
+    public String decryptRSA(String encrypted, int key, Logger logger) {
+        CaesarCipher cipher = new CaesarCipher(key);
+        return cipher.decrypt(encrypted, logger);
     }
 
     public class Port {
@@ -68,7 +68,8 @@ public class Shift {
             try {
                 logger.info("Loading keyfile");
                 reader = Files.newBufferedReader(keyfile.toPath());
-            } catch (Exception e) { }
+            } catch (Exception e) {
+            }
             logger.info("Parsing keyfile" + keyfile);
             Keyfile parsed = gson.fromJson(reader, Keyfile.class);
             if (parsed.key == 0) {
@@ -79,12 +80,13 @@ public class Shift {
         }
     }
 
-    public class Keyfile{
+    public class Keyfile {
         int key;
 
-        public Keyfile(){}
+        public Keyfile() {
+        }
 
-        public Keyfile(int key){
+        public Keyfile(int key) {
             this.key = key;
         }
 

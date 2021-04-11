@@ -1,17 +1,18 @@
 package db.models.user.userTypes;
 
-import content.Content;
 import config.Config;
+import content.Content;
 import db.dblogic.enums.DBService;
-import db.models.user.User;
 import db.models.message.MessageEventBus;
 import db.models.message.MessagePostBox;
+import db.models.user.User;
 
 import java.util.Date;
 
 public class UserType implements IUserType {
     private User user;
-    public UserType(User user){
+
+    public UserType(User user) {
         this.user = user;
     }
 
@@ -27,7 +28,7 @@ public class UserType implements IUserType {
             timestamp = String.valueOf(new Date().getTime() / 1000);
 
             DBService.instance.insertPostboxMessage(new MessagePostBox(message.getSender(), message.getRecipient(), decrypted, timestamp));
-            Config.instance.textArea.info(String.format( user.getName() + " s received new message"));
+            Config.instance.textArea.info(String.format(user.getName() + " s received new message"));
         } catch (Exception e) {
             Config.instance.textArea.info("Decryption timed out!");
         }
@@ -35,7 +36,7 @@ public class UserType implements IUserType {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "PARTICIPANT";
     }
 }

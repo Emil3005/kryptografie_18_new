@@ -9,7 +9,7 @@ import java.net.URLClassLoader;
 
 public class PortLoader {
 
-    public static Object getPort (String jarPath, String className) throws InvalidObjectException {
+    public static Object getPort(String jarPath, String className) throws InvalidObjectException {
 
         try {
 
@@ -19,8 +19,7 @@ public class PortLoader {
             Object instance = aClass.getMethod("getInstance").invoke(null);
             return aClass.getDeclaredField("port").get(instance);
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
 
             throw new InvalidObjectException("getting port from jar failed!");
 

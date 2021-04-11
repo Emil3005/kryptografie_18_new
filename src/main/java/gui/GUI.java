@@ -1,6 +1,7 @@
 package gui;
 
 import config.Config;
+import cryption.parser.Parser;
 import handler.TextAreaHandler;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -14,9 +15,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import cryption.parser.Parser;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.*;
 
 
@@ -69,15 +72,13 @@ public class GUI extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>()
-        {
-            public void handle(final KeyEvent keyEvent)
-            {
-                if(keyEvent.getCode() == KeyCode.F3){
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            public void handle(final KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.F3) {
                     Config.instance.loggingHandler.switchHandler();
-                } else if(keyEvent.getCode() == KeyCode.F8) {
+                } else if (keyEvent.getCode() == KeyCode.F8) {
                     loadLogfile(outputArea);
-                } else if(keyEvent.getCode().equals(KeyCode.F5)){
+                } else if (keyEvent.getCode().equals(KeyCode.F5)) {
                     execute(commandLineArea.getText());
                     commandLineArea.clear();
                 }
@@ -85,11 +86,11 @@ public class GUI extends Application {
         });
     }
 
-    private void execute(String command){
+    private void execute(String command) {
         Parser.evaluateCommand(command);
     }
 
-    private void loadLogfile(TextArea logArea){
+    private void loadLogfile(TextArea logArea) {
         List<String> lines = new ArrayList<>();
         BufferedReader br;
         try {
@@ -114,7 +115,7 @@ public class GUI extends Application {
             return;
         }
 
-        for (String line : lines){
+        for (String line : lines) {
             logArea.appendText(line);
             logArea.appendText("\n");
         }

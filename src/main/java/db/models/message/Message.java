@@ -1,4 +1,3 @@
-
 package db.models.message;
 
 import db.models.user.User;
@@ -12,7 +11,7 @@ public class Message {
     private final String plainMessage;
     private final String encryptedMessage;
 
-    public Message(User userSender, User userReceiver, String algorithm, String keyFile, String timestamp, String plainMessage, String encryptedMessage){
+    public Message(User userSender, User userReceiver, String algorithm, String keyFile, String timestamp, String plainMessage, String encryptedMessage) {
         this.userSender = userSender;
         this.userReceiver = userReceiver;
         this.algorithm = algorithm;
@@ -22,11 +21,11 @@ public class Message {
         this.encryptedMessage = encryptedMessage;
     }
 
-    public User getUserSender(){
+    public User getUserSender() {
         return this.userSender;
     }
 
-    public User getUserReceiver(){
+    public User getUserReceiver() {
         return this.userReceiver;
     }
 

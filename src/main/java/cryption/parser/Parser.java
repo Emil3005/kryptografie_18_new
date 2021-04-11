@@ -1,8 +1,8 @@
 package cryption.parser;
 
-import content.Content;
 import config.AlgorithmEnum;
 import config.Config;
+import content.Content;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,10 @@ import java.util.regex.Pattern;
 
 public class Parser {
 
-    public static void evaluateCommand(String command){
+    public static void evaluateCommand(String command) {
         String[] extracted;
         String[] patterns;
-        extracted= null;
+        extracted = null;
         patterns = new String[]{
 
                 "(encrypt message) \"(.+)\" using (rsa|shift) and keyfile ([A-Za-z0-9\\. ]*)",
@@ -58,7 +58,7 @@ public class Parser {
         return result;
     }
 
-    private static void processCommand(String[] extracted){
+    private static void processCommand(String[] extracted) {
         Content utils = new Content();
         switch (extracted[0]) {
             case "encrypt message" -> {

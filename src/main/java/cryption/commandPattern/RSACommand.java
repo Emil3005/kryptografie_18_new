@@ -27,14 +27,14 @@ public class RSACommand implements Callable<String>, ICommand {
         if (keyFile.exists()) {
             String jarName = "rsa_cracker.jar";
             if (VerifyJar.verified(jarName)) {
-                Config.instance.textArea.info("jar could not be verified - not loading corrupted jar");
+                Config.instance.textArea.info("Jar could not be verified - not loading corrupted jar");
             } else {
                 try {
                     Object port = PortLoader.getPort(Config.instance.jarPath + jarName, "RSACracker");
                     Method method = port.getClass().getDeclaredMethod("decrypt", String.class, File.class);
                     var answer = method.invoke(port, message, keyFile);
                     if (answer == null) {
-                        Config.instance.textArea.info("Problems Cracking Message probably invalid keyfile");
+                        Config.instance.textArea.info("Problems with cracking the message. Probably invalid keyfile");
                     } else {
                         result = answer.toString();
                     }

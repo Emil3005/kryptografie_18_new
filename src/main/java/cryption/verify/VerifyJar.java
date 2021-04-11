@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class VerifyJar
-
-{
+public class VerifyJar {
 
 
     public static boolean verified(String strJarFileName) {

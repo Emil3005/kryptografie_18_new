@@ -18,7 +18,7 @@ public class Application {
         javafx.application.Application.launch(GUI.class);
     }
 
-    public void setup(){
+    public void setup() {
         Config.instance.textArea.setUseParentHandlers(false);
         dbService.setupConnection();
         try {
@@ -29,11 +29,13 @@ public class Application {
         if (!DBService.instance.userExists("msa")) DBService.instance.init();
     }
 
-    private void startupGUI(){}
+    private void startupGUI() {
+    }
 
-    private void close(){
+    private void close() {
         dbService.shutdown();
     }
 
-    private void initNetworks(){}
+    private void initNetworks() {
+    }
 }

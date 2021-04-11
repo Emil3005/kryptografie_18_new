@@ -1,13 +1,10 @@
-
 import java.text.DecimalFormat;
 
 public class ShiftCracker {
     private static final ShiftCracker instance = new ShiftCracker();
-    public Port port;
-
-    private int key;
-
     private static final DecimalFormat decimalFormat = new DecimalFormat("#0.00000");
+    public Port port;
+    private int key;
 
     private ShiftCracker() {
         port = new Port();
@@ -16,46 +13,6 @@ public class ShiftCracker {
     public static ShiftCracker getInstance() {
         return instance;
     }
-
-    private String decrypt(String encryptedMessage) {
-
-        if (encryptedMessage.equals("")) {
-            System.exit(0);
-        }
-        String source = encryptedMessage.trim().toUpperCase();
-        char[] sourceText = new char[source.length()];
-        int[] unicode = new int[source.length()];
-        int[] unicodeCopy = new int[source.length()];
-
-        for (int count = 0; count < source.length(); count++) {
-            sourceText[count] = source.charAt(count);
-        }
-
-        String hex;
-        int dec;
-
-        for (int count = 0; count < sourceText.length; count++) {
-            hex = Integer.toHexString(sourceText[count]);
-            dec = Integer.parseInt(hex, 16);
-            unicode[count] = dec;
-            unicodeCopy[count] = dec;
-        }
-
-        StringBuilder builder = new StringBuilder();
-
-        for (int shift = 1; shift <= 25; shift++) {
-            builder.append(smartShift(shift, unicode, unicodeCopy));
-        }
-
-        return builder.toString();
-    }
-
-    public class Port {
-        public String decrypt(String encryptedMessage) {
-            return ShiftCracker.this.decrypt(encryptedMessage);
-        }
-    }
-
 
     private static String smartShift(int shift, int[] unicode, int[] unicodeCopy) {
         for (int x = 0; x <= unicode.length - 1; x++) {
@@ -120,5 +77,44 @@ public class ShiftCracker {
             return (stringBuilder.toString());
         }
         return null;
+    }
+
+    private String decrypt(String encryptedMessage) {
+
+        if (encryptedMessage.equals("")) {
+            System.exit(0);
+        }
+        String source = encryptedMessage.trim().toUpperCase();
+        char[] sourceText = new char[source.length()];
+        int[] unicode = new int[source.length()];
+        int[] unicodeCopy = new int[source.length()];
+
+        for (int count = 0; count < source.length(); count++) {
+            sourceText[count] = source.charAt(count);
+        }
+
+        String hex;
+        int dec;
+
+        for (int count = 0; count < sourceText.length; count++) {
+            hex = Integer.toHexString(sourceText[count]);
+            dec = Integer.parseInt(hex, 16);
+            unicode[count] = dec;
+            unicodeCopy[count] = dec;
+        }
+
+        StringBuilder builder = new StringBuilder();
+
+        for (int shift = 1; shift <= 25; shift++) {
+            builder.append(smartShift(shift, unicode, unicodeCopy));
+        }
+
+        return builder.toString();
+    }
+
+    public class Port {
+        public String decrypt(String encryptedMessage) {
+            return ShiftCracker.this.decrypt(encryptedMessage);
+        }
     }
 }

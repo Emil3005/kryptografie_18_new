@@ -14,7 +14,7 @@ public enum Config {
 
     public final String jdkPath = "C:\\Program Files\\Java\\jdk-15.0.2\\bin\\";
 
-    public final String logDir =  "log";
+    public final String logDir = "log";
 
     public final java.util.logging.Logger textArea = java.util.logging.Logger.getLogger("textarea");
 

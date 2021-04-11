@@ -9,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 
-public class ShiftCommand implements Callable<String>, ICommand{
+public class ShiftCommand implements Callable<String>, ICommand {
     String message;
 
     public ShiftCommand(String message) {
@@ -21,7 +21,7 @@ public class ShiftCommand implements Callable<String>, ICommand{
         String result = null;
         String jarName = "shift_cracker.jar";
         if (VerifyJar.verified(jarName)) {
-            Config.instance.textArea.info("jar could not be verified - not loading corrupted jar");
+            Config.instance.textArea.info("Jar could not be verified - not loading corrupted jar");
         } else {
             try {
                 Object port = PortLoader.getPort(Config.instance.jarPath + jarName, "ShiftCracker");

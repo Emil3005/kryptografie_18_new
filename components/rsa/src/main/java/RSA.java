@@ -12,24 +12,24 @@ public class RSA {
     private static RSA instance = new RSA();
     public Port port;
 
-    public RSA(){
+    public RSA() {
         port = new Port();
     }
 
-    public String encryptRSA(String plain, Key key, Logger logger){
+    public static RSA getInstance() {
+        return instance;
+    }
+
+    public String encryptRSA(String plain, Key key, Logger logger) {
         Cipher cipher = new Cipher();
         byte[] encryptedMessage = cipher.encrypt(plain, key, logger);
         return Base64.getEncoder().encodeToString(encryptedMessage);
     }
 
-    public String decryptRSA(String encrypted, Key key, Logger logger){
+    public String decryptRSA(String encrypted, Key key, Logger logger) {
         Cipher cipher = new Cipher();
         byte[] encryptedMessage = Base64.getDecoder().decode(encrypted);
         return cipher.decrypt(encryptedMessage, key, logger);
-    }
-
-    public static RSA getInstance() {
-        return instance;
     }
 
     public class Port {
@@ -75,7 +75,8 @@ public class RSA {
             try {
                 logger.info("Loading keyfile" + keyfile);
                 reader = Files.newBufferedReader(keyfile.toPath());
-            } catch (Exception e) { }
+            } catch (Exception e) {
+            }
             logger.info("Parsing keyfile");
             Keyfile parsed = gson.fromJson(reader, Keyfile.class);
 
@@ -88,14 +89,15 @@ public class RSA {
         }
     }
 
-    public class Keyfile{
+    public class Keyfile {
         BigInteger e;
         BigInteger d;
         BigInteger n;
 
-        public Keyfile(){}
+        public Keyfile() {
+        }
 
-        public Keyfile(BigInteger e, BigInteger d, BigInteger n){
+        public Keyfile(BigInteger e, BigInteger d, BigInteger n) {
             this.e = e;
             this.d = d;
             this.n = n;

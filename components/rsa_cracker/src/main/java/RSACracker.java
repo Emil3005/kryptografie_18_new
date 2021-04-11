@@ -11,11 +11,9 @@ import java.util.List;
 
 public class RSACracker {
     private static RSACracker instance = new RSACracker();
-
+    public Port port;
     private BigInteger e = BigInteger.ZERO;
     private BigInteger n = BigInteger.ZERO;
-
-    public Port port;
 
     private RSACracker() {
         port = new Port();
@@ -23,16 +21,6 @@ public class RSACracker {
 
     public static RSACracker getInstance() {
         return instance;
-    }
-
-    public class Port {
-        public String version() {
-            return null;
-        }
-
-        public String decrypt(String encryptedMessage, File publicKeyfile) {
-            return decryptMessage(encryptedMessage, publicKeyfile);
-        }
     }
 
     private String decryptMessage(String encryptedMessage, File publicKeyfile) {
@@ -127,14 +115,25 @@ public class RSACracker {
         return factorList;
     }
 
-    public class Keyfile{
+    public class Port {
+        public String version() {
+            return null;
+        }
+
+        public String decrypt(String encryptedMessage, File publicKeyfile) {
+            return decryptMessage(encryptedMessage, publicKeyfile);
+        }
+    }
+
+    public class Keyfile {
         BigInteger e;
         BigInteger d;
         BigInteger n;
 
-        public Keyfile(){}
+        public Keyfile() {
+        }
 
-        public Keyfile(BigInteger e, BigInteger d, BigInteger n){
+        public Keyfile(BigInteger e, BigInteger d, BigInteger n) {
             this.e = e;
             this.d = d;
             this.n = n;
