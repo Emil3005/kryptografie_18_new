@@ -271,9 +271,9 @@ public enum DBService implements IDBService {
 
     @Override
     public Participant getOneParticipant(String participantName) {
-        participantName = participantName.toLowerCase();
-        if (participantExists(participantName)) {
-            return new Participant(participantName, getOneParticipantType(participantName));
+        String participantNameLower = participantName.toLowerCase();
+        if (participantExists(participantNameLower)) {
+            return new Participant(participantNameLower, getOneParticipantType(participantNameLower));
         }
         return null;
     }
@@ -300,11 +300,11 @@ public enum DBService implements IDBService {
 
 
     private int getTypeID(String name) {
-        name = name.toLowerCase();
+        String nameLowercase = name.toLowerCase();
         try {
-            ResultSet resultSet = db.executeQuery("SELECT ID from TYPES where name='" + name + "'");
+            ResultSet resultSet = db.executeQuery("SELECT ID from TYPES where name='" + nameLowercase + "'");
             if (!resultSet.next()) {
-                throw new SQLException("Type "+ name + " not existing");
+                throw new SQLException("Type "+ nameLowercase + " not existing");
             }
             return resultSet.getInt("ID");
         } catch (SQLException sqlException) {

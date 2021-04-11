@@ -10,9 +10,6 @@ import db.models.PostboxMessage;
 import java.util.Date;
 
 public class Intruder implements IParticipantType {
-    public Intruder (){
-
-    }
 
     @Override
     public void receiveMessage(BusMessage message) {
