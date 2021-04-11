@@ -17,10 +17,7 @@ import javafx.stage.Stage;
 import cryption.parser.Parser;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 
 public class GUI extends Application {
@@ -51,7 +48,7 @@ public class GUI extends Application {
             public void handle(ActionEvent event) {
                 execute(commandLineArea.getText());
                 commandLineArea.clear();
-                outputArea.clear(); //damit unten auch refresht wird
+                outputArea.clear();
             }
         });
 
@@ -98,9 +95,9 @@ public class GUI extends Application {
         try {
 
             File logDir = new File(Config.instance.logDir);
-            var files = logDir.listFiles();
+            File[] files = logDir.listFiles();
             assert files != null;
-            var latest = Arrays.stream(files).max(Comparator.comparing(f -> f.lastModified()));
+            Optional<File> latest = Arrays.stream(files).max(Comparator.comparing(f -> f.lastModified()));
             assert latest.isPresent();
             br = new BufferedReader(new FileReader(latest.get()));
             String line;
@@ -110,10 +107,10 @@ public class GUI extends Application {
             br.close();
 
         } catch (FileNotFoundException e) {
-            Config.instance.textArea.info("no logfile present");
+            Config.instance.textArea.info("No logfile present");
             return;
         } catch (Exception e) {
-            Config.instance.textArea.info("problems occurred while loading log file");
+            Config.instance.textArea.info("Problems occurred while loading log file");
             return;
         }
 
