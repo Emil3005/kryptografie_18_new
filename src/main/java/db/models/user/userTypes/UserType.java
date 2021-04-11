@@ -27,7 +27,7 @@ public class UserType implements IUserType {
             timestamp = String.valueOf(new Date().getTime() / 1000);
 
             DBService.instance.insertPostboxMessage(new MessagePostBox(message.getSender(), message.getRecipient(), decrypted, timestamp));
-            Config.instance.textArea.info(String.format("%s received new message", user.getName()));
+            Config.instance.textArea.info(String.format( user.getName() + " s received new message"));
         } catch (Exception e) {
             Config.instance.textArea.info("Decryption timed out!");
         }

@@ -18,7 +18,7 @@ public enum Config {
 
     public final java.util.logging.Logger textArea = java.util.logging.Logger.getLogger("textarea");
 
-    public final Map<String, String> intrudedChannels = new HashMap<>();
+    public final Map<String, String> hackedChannels = new HashMap<>();
 
     public final LoggingHandler loggingHandler = new LoggingHandler();
 

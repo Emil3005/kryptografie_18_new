@@ -27,9 +27,9 @@ public class Intruder implements IUserType {
             else {
                 cracked = utils.crackEncryptedMessageUsingShift(message.getMessage());
             }
-            Config.instance.textArea.info(String.format("cracked message: "+cracked));
+            Config.instance.textArea.info(String.format("Cracked message: "+cracked));
         } catch (Exception e){
-            Config.instance.textArea.info(String.format("cracking encrypted message \""+message.getMessage()+"\""));
+            Config.instance.textArea.info(String.format("Cracking encrypted message \""+message.getMessage()+"\""));
         }
 
     }

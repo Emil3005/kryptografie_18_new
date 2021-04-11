@@ -21,8 +21,8 @@ public class Channel {
         this.userB = userB;
         eventBus.register(userA);
         eventBus.register(userB);
-        if (Config.instance.intrudedChannels.containsKey(this.name)){
-            eventBus.register(DBService.instance.getUser(Config.instance.intrudedChannels.get(this.name)));
+        if (Config.instance.hackedChannels.containsKey(this.name)){
+            eventBus.register(DBService.instance.getUser(Config.instance.hackedChannels.get(this.name)));
         }
     }
 
@@ -44,7 +44,7 @@ public class Channel {
 
     public void intrude(User intruder){
         eventBus.register(intruder);
-        Config.instance.intrudedChannels.put(this.name, intruder.getName());
+        Config.instance.hackedChannels.put(this.name, intruder.getName());
     }
 
 }
