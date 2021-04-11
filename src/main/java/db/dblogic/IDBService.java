@@ -29,9 +29,9 @@ public interface IDBService {
 
     void insertMessage(Message message);
 
-    void insertParticipant(String name, String type);
+    void insertUser(String name, String type);
 
-    void insertParticipant(User user);
+    void insertUser(User user);
 
     void insertChannel(Channel channel);
 
@@ -48,17 +48,13 @@ public interface IDBService {
 
     Channel getChannel(String participantA, String participantB);
 
-    String getParticipantType(String participantName);
+    String getUserType(String participantName);
 
-<<<<<<< HEAD
-    Participant getParticipant(String participantName);
-=======
-    User getOneParticipant(String participantName);
->>>>>>> a57cd88f43bddda1db163989e3aac6588639ac30
+    User getUser(String participantName);
 
     // Check for existence
 
     boolean channelExists(String channelName);
 
-    boolean participantExists(String name);
+    boolean userExists(String name);
 }

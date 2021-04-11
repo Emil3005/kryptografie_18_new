@@ -40,8 +40,8 @@ public enum DBService implements IDBService {
         int receiverID;
         int algorithmID;
 
-        senderID = getParticipantID(sender);
-        receiverID = getParticipantID(receiver);
+        senderID = getUserID(sender);
+        receiverID = getUserID(receiver);
         algorithmID = getAlgorithmID(algorithm);
 
         long timeStamp = Instant.now().getEpochSecond();
@@ -90,7 +90,7 @@ public enum DBService implements IDBService {
     }
 
     @Override
-    public void insertParticipant(String name, String type) {
+    public void insertUser(String name, String type) {
         name = name.toLowerCase();
         int id = getTypeID(type);
 
@@ -103,15 +103,15 @@ public enum DBService implements IDBService {
     }
 
     @Override
-    public void insertParticipant(User user) {
-        insertParticipant(user.getName(), user.getType());
+    public void insertUser(User user) {
+        insertUser(user.getName(), user.getType());
     }
 
     @Override
     public void insertChannel(String name, String participantA, String participantB) {
        name = name.toLowerCase();
-        int idA = getParticipantID(participantA);
-        int idB = getParticipantID(participantB);
+        int idA = getUserID(participantA);
+        int idB = getUserID(participantB);
 
         try {
             db.update(String.format(
@@ -131,15 +131,13 @@ public enum DBService implements IDBService {
     }
 
     @Override
-<<<<<<< HEAD
-=======
     public void insertPostboxMessage(String participantSender, String participantReceiver, String message) {
-        if (!participantExists(participantSender) || !participantExists(participantReceiver)) {
+        if (!userExists(participantSender) || !userExists(participantReceiver)) {
             Config.instance.textArea.info("Participant " + participantSender + " not found");
             return;
         }
 
-        int participantFromID = getParticipantID(participantSender);
+        int participantFromID = getUserID(participantSender);
         long timeStamp = Instant.now().getEpochSecond();
         try {
             db.update(String.format(
@@ -177,26 +175,25 @@ public enum DBService implements IDBService {
     }
 
     @Override
->>>>>>> a57cd88f43bddda1db163989e3aac6588639ac30
     public List<Channel> getChannels() {
         List<Channel> channelList = new ArrayList<>();
 
         try {
             ResultSet resultSet = db.executeQuery("SELECT * from channel");
             while (resultSet.next()) {
-<<<<<<< HEAD
-                int participantID1 = resultSet.getInt("participant_01");
-                int participantID2 = resultSet.getInt("participant_02");
-                Participant participant1 = getParticipant(participantID1);
-                Participant participant2 = getParticipant(participantID2);
-                channelList.add(new Channel(resultSet.getString("name"), participant1, participant2));
-=======
+
+                int userID1 = resultSet.getInt("participant_01");
+                int userID2 = resultSet.getInt("participant_02");
+                User user1 = getUser(userID1);
+                User user2 = getUser(userID2);
+                channelList.add(new Channel(resultSet.getString("name"), user1, user2));
+
                 int participant1ID = resultSet.getInt("participant_01");
                 int participant2ID = resultSet.getInt("participant_02");
-                User userA = getParticipant(participant1ID);
-                User userB = getParticipant(participant2ID);
+                User userA = getUser(participant1ID);
+                User userB = getUser(participant2ID);
                 channelList.add(new Channel(resultSet.getString("name"), userA, userB));
->>>>>>> a57cd88f43bddda1db163989e3aac6588639ac30
+
             }
         } catch (SQLException exception) {
             Config.instance.textArea.info(exception.getMessage());
@@ -206,9 +203,9 @@ public enum DBService implements IDBService {
 
 
     @Override
-    public Channel getChannel(String participant1, String participant2) {
-        int participantID1 = getParticipantID(participant1);
-        int participantID2 = getParticipantID(participant2);
+    public Channel getChannel(String user1, String user2) {
+        int participantID1 = getUserID(user1);
+        int participantID2 = getUserID(user2);
 
         String sql = MessageFormat.format("SELECT name from channel where (participant_01=''{0}'' AND participant_02=''{1}'') or (participant_01=''{1}'' AND participant_02=''{0}'')", participantID1, participantID2);
         String channel;
@@ -216,10 +213,10 @@ public enum DBService implements IDBService {
         try {
             ResultSet resultSet = db.executeQuery(sql);
             if (!resultSet.next()) {
-                throw new SQLException("Channel between: "+ participant1 +", "+ participant2 +"not existing");
+                throw new SQLException("Channel between: "+ user1 +", "+ user2 +"not existing");
             }
             channel = resultSet.getString("name");
-            return new Channel(channel, getParticipant(participant1), getParticipant(participant2));
+            return new Channel(channel, getUser(user1), getUser(user2));
         } catch (SQLException exception) {
             Config.instance.textArea.info(exception.getMessage());
             return null;
@@ -237,7 +234,7 @@ public enum DBService implements IDBService {
             }
             participantID1 = resultSet.getInt("participant_01");
             participantID2 = resultSet.getInt("participant_02");
-            return new Channel(channel, getParticipant(participantID1), getParticipant(participantID2));
+            return new Channel(channel, getUser(participantID1), getUser(participantID2));
         } catch (SQLException sqlException) {
             Config.instance.textArea.info(sqlException.getMessage());
             return null;
@@ -259,34 +256,7 @@ public enum DBService implements IDBService {
     }
 
     @Override
-    public void insertPostboxMessage(String sender, String receiver, String message) {
-        if (!participantExists(sender) || !participantExists(receiver)) {
-            Config.instance.textArea.info("Participant "+ sender +" not found");
-            return;
-        }
-
-        int id = getParticipantID(sender);
-        long timeStamp = Instant.now().getEpochSecond();
-        try {
-            db.update(String.format(
-                            "INSERT INTO postbox_"+ receiver +"" +
-                            " (participant_from_id, message, timestamp)" +
-                                    " VALUES ("+ id +", '"+ message +"', "+ timeStamp +")"));
-        } catch (SQLException exception) {
-            Config.instance.textArea.info(exception.toString());
-        }
-    }
-
-    @Override
-    public void insertPostboxMessage(PostboxMessage postboxMessage) {
-        insertPostboxMessage(postboxMessage.getParticipantReceiver().getName(),
-                postboxMessage.getParticipantSender().getName(),
-                postboxMessage.getMessage());
-    }
-
-
-    @Override
-    public String getParticipantType(String participant) {
+    public String getUserType(String participant) {
         if (participant == null)
             return null;
 
@@ -308,20 +278,14 @@ public enum DBService implements IDBService {
     }
 
     @Override
-<<<<<<< HEAD
-    public Participant getParticipant(String participant) {
-        participant = participant.toLowerCase();
-        if (participantExists(participant)) {
-            return new Participant(participant, getParticipantType(participant));
-=======
-    public User getOneParticipant(String participantName) {
-        String participantNameLower = participantName.toLowerCase();
-        if (participantExists(participantNameLower)) {
-            return new User(participantNameLower, getOneParticipantType(participantNameLower));
->>>>>>> a57cd88f43bddda1db163989e3aac6588639ac30
+    public User getUser(String user) {
+        user = user.toLowerCase();
+        if (userExists(user)) {
+            return new User(user, getUserType(user));
         }
         return null;
     }
+
 
     @Override
     public boolean channelExists(String channel) {
@@ -338,8 +302,8 @@ public enum DBService implements IDBService {
     }
 
     @Override
-    public boolean participantExists(String name) {
-        int id = getParticipantID(name.toLowerCase());
+    public boolean userExists(String name) {
+        int id = getUserID(name.toLowerCase());
         return id != -1;
     }
 
@@ -347,11 +311,9 @@ public enum DBService implements IDBService {
     private int getTypeID(String name) {
         String nameLowercase = name.toLowerCase();
         try {
-<<<<<<< HEAD
+
             ResultSet resultSet = db.executeQuery("SELECT ID from TYPES where name='"+ name + "'");
-=======
-            ResultSet resultSet = db.executeQuery("SELECT ID from TYPES where name='" + nameLowercase + "'");
->>>>>>> a57cd88f43bddda1db163989e3aac6588639ac30
+
             if (!resultSet.next()) {
                 throw new SQLException("Type "+ nameLowercase + " not existing");
             }
@@ -362,7 +324,7 @@ public enum DBService implements IDBService {
         }
     }
 
-    private int getParticipantID(String name) {
+    private int getUserID(String name) {
         try {
             ResultSet resultSet = db.executeQuery("SELECT ID from PARTICIPANTS where name='"+ name +"'");
             if (!resultSet.next()) {
@@ -375,7 +337,7 @@ public enum DBService implements IDBService {
         return -1;
     }
 
-    private String getParticipantName(int participantID) {
+    private String getUserName(int participantID) {
         try {
             ResultSet resultSet = db.executeQuery("SELECT name from participants where ID="+ participantID);
             if (!resultSet.next()) {
@@ -414,15 +376,11 @@ public enum DBService implements IDBService {
         }
     }
 
-<<<<<<< HEAD
-    private Participant getParticipant(int participantID) {
-        String name = getParticipantName(participantID);
-        return new Participant(name, Objects.requireNonNull(getParticipantType(name)));
-=======
-    private User getParticipant(int partID) {
-        String name = getParticipantName(partID);
-        return new User(name, Objects.requireNonNull(getOneParticipantType(name)));
->>>>>>> a57cd88f43bddda1db163989e3aac6588639ac30
+
+    private User getUser(int partID) {
+        String name = getUserName(partID);
+        return new User(name, Objects.requireNonNull(getUserType(name)));
+
     }
 
     public void init() {
@@ -434,12 +392,12 @@ public enum DBService implements IDBService {
         insertAlgorithm("shift");
         insertAlgorithm("rsa");
 
-        insertParticipant("branch_hkg","normal");
-        insertParticipant("branch_wuh","normal");
-        insertParticipant("branch_cpt","normal");
-        insertParticipant("branch_syd","normal");
-        insertParticipant("branch_sfo","normal");
-        insertParticipant("msa","intruder");
+        insertUser("branch_hkg","normal");
+        insertUser("branch_wuh","normal");
+        insertUser("branch_cpt","normal");
+        insertUser("branch_syd","normal");
+        insertUser("branch_sfo","normal");
+        insertUser("msa","intruder");
 
         insertChannel("hkg_wuh","branch_hkg","branch_wuh");
         insertChannel("hkg_cpt","branch_hkg","branch_cpt");

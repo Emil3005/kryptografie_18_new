@@ -3,8 +3,12 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
 <<<<<<< HEAD
+<<<<<<< HEAD
     <mapping directory="$PROJECT_DIR$/kryptografie_18" vcs="Git" />
 =======
 >>>>>>> a57cd88f43bddda1db163989e3aac6588639ac30
+=======
+    <mapping directory="$PROJECT_DIR$/kryptografie_18" vcs="Git" />
+>>>>>>> parent of a57cd88 (keine Ahnung)
   </component>
 </project>

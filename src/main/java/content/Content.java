@@ -122,13 +122,13 @@ public class Content {
         return null;
     }
     public void registerParticipant(String name, String type){
-        if (DBService.instance.participantExists(name)){
+        if (DBService.instance.userExists(name)){
             Config.instance.textArea.info(String.format("participant " + name + " already exists, using existing postbox_"+ name));
         }
 
         User user = new User(name, type);
         Config.instance.textArea.info(String.format("participant " + name + " with Type " + type + " registered and postbox_"+ name + " created"));
-        DBService.instance.insertParticipant(user);
+        DBService.instance.insertUser(user);
     }
 
     public  void createChannel(String channelName, String part1name, String part2name){
@@ -141,13 +141,8 @@ public class Content {
         if (part1name.equals(part2name))
             Config.instance.textArea.info(String.format(part1name + " and "+part2name+" are identical - cannot create channel on itself"));
 
-<<<<<<< HEAD:src/main/java/cryption/Content.java
-        Participant instanceFirstParticipant = DBService.instance.getParticipant(part1name);
-        Participant instanceSecondParticipant = DBService.instance.getParticipant(part2name);
-=======
-        User instanceFirstUser = DBService.instance.getOneParticipant(part1name);
-        User instanceSecondUser = DBService.instance.getOneParticipant(part2name);
->>>>>>> a57cd88f43bddda1db163989e3aac6588639ac30:src/main/java/content/Content.java
+        User instanceFirstUser = DBService.instance.getUser(part1name);
+        User instanceSecondUser = DBService.instance.getUser(part2name);
 
         Channel channel = new Channel(channelName, instanceFirstUser, instanceSecondUser);
         Config.instance.textArea.info(String.format("channel " + channelName + " from "+ part1name + " to "+part2name+" successfully created"));
@@ -184,11 +179,8 @@ public class Content {
 
 
     public void intrudeChannel(String channelName, String participant){
-<<<<<<< HEAD:src/main/java/cryption/Content.java
-        Participant intruder = DBService.instance.getParticipant(participant);
-=======
-        User intruder = DBService.instance.getOneParticipant(participant);
->>>>>>> a57cd88f43bddda1db163989e3aac6588639ac30:src/main/java/content/Content.java
+
+        User intruder = DBService.instance.getUser(participant);
 
         if (intruder == null){
             Config.instance.textArea.info(String.format("intruder "+participant+" could not be found"));
@@ -206,15 +198,9 @@ public class Content {
 
 
 
-<<<<<<< HEAD:src/main/java/cryption/Content.java
-    public void sendMessage(String message, String sender, String recipient, AlgorithmUsed algorithmUsed, String strKeyFile){
-        Participant senderPart = DBService.instance.getParticipant(sender);
-        Participant receiverPart = DBService.instance.getParticipant(recipient);
-=======
     public void sendMessage(String message, String sender, String recipient, AlgorithmEnum algorithmEnum, String strKeyFile){
-        User senderPart = DBService.instance.getOneParticipant(sender);
-        User receiverPart = DBService.instance.getOneParticipant(recipient);
->>>>>>> a57cd88f43bddda1db163989e3aac6588639ac30:src/main/java/content/Content.java
+        User senderPart = DBService.instance.getUser(sender);
+        User receiverPart = DBService.instance.getUser(recipient);
         Channel channel = DBService.instance.getChannel(sender, recipient);
         Date currentDate = new Date();
         long timestampLong = currentDate.getTime()/1000;
