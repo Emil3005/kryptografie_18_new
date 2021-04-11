@@ -51,6 +51,7 @@ public class GUI extends Application {
             public void handle(ActionEvent event) {
                 execute(commandLineArea.getText());
                 commandLineArea.clear();
+                outputArea.clear(); //damit unten auch refresht wird
             }
         });
 
