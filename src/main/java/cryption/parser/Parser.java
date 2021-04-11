@@ -1,7 +1,7 @@
 package cryption.parser;
 
-import cryption.Content;
-import config.AlgorithmUsed;
+import content.Content;
+import config.AlgorithmEnum;
 import config.Config;
 
 import java.util.ArrayList;
@@ -62,11 +62,11 @@ public class Parser {
         Content utils = new Content();
         switch (extracted[0]) {
             case "encrypt message" -> {
-                String encrypted = utils.encrypt(extracted[1], extracted[2].equals("rsa") ? AlgorithmUsed.RSA : AlgorithmUsed.SHIFT, extracted[3]);
+                String encrypted = utils.encrypt(extracted[1], extracted[2].equals("rsa") ? AlgorithmEnum.RSA : AlgorithmEnum.SHIFT, extracted[3]);
                 if (encrypted != null) Config.instance.textArea.info(encrypted);
             }
             case "decrypt message" -> {
-                String decrypted = utils.decrypt(extracted[1], extracted[2].equals("rsa") ? AlgorithmUsed.RSA : AlgorithmUsed.SHIFT, extracted[3]);
+                String decrypted = utils.decrypt(extracted[1], extracted[2].equals("rsa") ? AlgorithmEnum.RSA : AlgorithmEnum.SHIFT, extracted[3]);
                 if (decrypted != null) Config.instance.textArea.info(decrypted);
             }
             case "crack encrypted message" -> {
@@ -83,7 +83,7 @@ public class Parser {
             case "show channel" -> utils.showChannel();
             case "drop channel" -> utils.dropChannel(extracted[1]);
             case "intrude channel" -> utils.intrudeChannel(extracted[1], extracted[2]);
-            case "send message" -> utils.sendMessage(extracted[1], extracted[2], extracted[3], extracted[4].equals("rsa") ? AlgorithmUsed.RSA : AlgorithmUsed.SHIFT, extracted[5]);
+            case "send message" -> utils.sendMessage(extracted[1], extracted[2], extracted[3], extracted[4].equals("rsa") ? AlgorithmEnum.RSA : AlgorithmEnum.SHIFT, extracted[5]);
         }
     }
 }

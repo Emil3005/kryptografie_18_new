@@ -1,6 +1,6 @@
 package db.models.user.userTypes;
 
-import cryption.Content;
+import content.Content;
 import config.Config;
 import db.dblogic.enums.DBService;
 import db.models.user.User;

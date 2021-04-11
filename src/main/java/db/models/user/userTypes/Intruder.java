@@ -1,8 +1,8 @@
 package db.models.user.userTypes;
 
-import config.AlgorithmUsed;
+import config.AlgorithmEnum;
 import config.Config;
-import cryption.Content;
+import content.Content;
 import db.dblogic.enums.DBService;
 import db.models.message.MessageEventBus;
 import db.models.message.MessagePostBox;
@@ -21,7 +21,7 @@ public class Intruder implements IUserType {
 
         try{
             String cracked;
-            if (message.getAlgorithm().equals(AlgorithmUsed.RSA)) {
+            if (message.getAlgorithm().equals(AlgorithmEnum.RSA)) {
                 cracked = utils.crackEncryptedMessageUsingRSA(message.getMessage(), message.getKeyFile());
             }
             else {

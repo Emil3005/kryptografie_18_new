@@ -6,7 +6,7 @@
 
 package db.models.message;
 
-import config.AlgorithmUsed;
+import config.AlgorithmEnum;
 import db.models.user.User;
 
 public class MessageEventBus {
@@ -14,10 +14,10 @@ public class MessageEventBus {
     private String message;
     private User sender;
     private User recipient;
-    private AlgorithmUsed algorithm;
+    private AlgorithmEnum algorithm;
     private String keyFile;
 
-    public MessageEventBus(String message, User sender, User recipient, AlgorithmUsed algorithm, String keyFile){
+    public MessageEventBus(String message, User sender, User recipient, AlgorithmEnum algorithm, String keyFile){
         this.message = message;
         this.sender = sender;
         this.recipient = recipient;
@@ -37,7 +37,7 @@ public class MessageEventBus {
         return recipient;
     }
 
-    public AlgorithmUsed getAlgorithm() {
+    public AlgorithmEnum getAlgorithm() {
         return algorithm;
     }
 
