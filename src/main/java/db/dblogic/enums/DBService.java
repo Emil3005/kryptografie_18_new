@@ -2,10 +2,10 @@ package db.dblogic.enums;
 
 import config.Config;
 import db.dblogic.IDBService;
-import db.models.Channel;
-import db.models.Message;
-import db.models.Participant;
-import db.models.PostboxMessage;
+import db.models.channel.Channel;
+import db.models.message.Message;
+import db.models.user.User;
+import db.models.message.MessagePostBox;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -91,8 +91,8 @@ public enum DBService implements IDBService {
 
     @Override
     public void insertMessage(Message message) {
-        insertMessage(message.getParticipantSender().getName(),
-                message.getParticipantReceiver().getName(),
+        insertMessage(message.getUserSender().getName(),
+                message.getUserReceiver().getName(),
                 message.getAlgorithm(),
                 message.getKeyFile(),
                 message.getPlainMessage(),
@@ -113,8 +113,8 @@ public enum DBService implements IDBService {
     }
 
     @Override
-    public void insertParticipant(Participant participant) {
-        insertParticipant(participant.getName(), participant.getType());
+    public void insertParticipant(User user) {
+        insertParticipant(user.getName(), user.getType());
     }
 
     @Override
@@ -139,8 +139,8 @@ public enum DBService implements IDBService {
     @Override
     public void insertChannel(Channel channel) {
         insertChannel(channel.getName(),
-                channel.getParticipantA().getName(),
-                channel.getParticipantB().getName());
+                channel.getUserA().getName(),
+                channel.getUserB().getName());
     }
 
     @Override
@@ -167,10 +167,10 @@ public enum DBService implements IDBService {
     }
 
     @Override
-    public void insertPostboxMessage(PostboxMessage postboxMessage) {
-        insertPostboxMessage(postboxMessage.getParticipantReceiver().getName(),
-                postboxMessage.getParticipantSender().getName(),
-                postboxMessage.getMessage());
+    public void insertPostboxMessage(MessagePostBox messagePostBox) {
+        insertPostboxMessage(messagePostBox.getUserReceiver().getName(),
+                messagePostBox.getUserSender().getName(),
+                messagePostBox.getMessage());
     }
 
     public boolean removeChannel(String channelName) {
@@ -196,9 +196,9 @@ public enum DBService implements IDBService {
             while (resultSet.next()) {
                 int participant1ID = resultSet.getInt("participant_01");
                 int participant2ID = resultSet.getInt("participant_02");
-                Participant participantA = getParticipant(participant1ID);
-                Participant participantB = getParticipant(participant2ID);
-                channelList.add(new Channel(resultSet.getString("name"), participantA, participantB));
+                User userA = getParticipant(participant1ID);
+                User userB = getParticipant(participant2ID);
+                channelList.add(new Channel(resultSet.getString("name"), userA, userB));
             }
         } catch (SQLException exception) {
             Config.instance.textArea.info(exception.getMessage());
@@ -270,10 +270,10 @@ public enum DBService implements IDBService {
     }
 
     @Override
-    public Participant getOneParticipant(String participantName) {
+    public User getOneParticipant(String participantName) {
         String participantNameLower = participantName.toLowerCase();
         if (participantExists(participantNameLower)) {
-            return new Participant(participantNameLower, getOneParticipantType(participantNameLower));
+            return new User(participantNameLower, getOneParticipantType(participantNameLower));
         }
         return null;
     }
@@ -365,9 +365,9 @@ public enum DBService implements IDBService {
         }
     }
 
-    private Participant getParticipant(int partID) {
+    private User getParticipant(int partID) {
         String name = getParticipantName(partID);
-        return new Participant(name, Objects.requireNonNull(getOneParticipantType(name)));
+        return new User(name, Objects.requireNonNull(getOneParticipantType(name)));
     }
 
     public void createInitialValues() {

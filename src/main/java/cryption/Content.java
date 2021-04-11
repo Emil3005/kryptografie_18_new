@@ -11,10 +11,10 @@ import cryption.commandPattern.ShiftCommand;
 import config.AlgorithmUsed;
 import config.Config;
 import db.dblogic.enums.DBService;
-import db.models.BusMessage;
-import db.models.Channel;
-import db.models.Message;
-import db.models.Participant;
+import db.models.message.MessageEventBus;
+import db.models.channel.Channel;
+import db.models.message.Message;
+import db.models.user.User;
 
 import java.io.File;
 import java.io.InvalidObjectException;
@@ -124,9 +124,9 @@ public class Content {
             Config.instance.textArea.info(String.format("participant " + name + " already exists, using existing postbox_"+ name));
         }
 
-        Participant participant = new Participant(name, type);
+        User user = new User(name, type);
         Config.instance.textArea.info(String.format("participant " + name + " with Type " + type + " registered and postbox_"+ name + " created"));
-        DBService.instance.insertParticipant(participant);
+        DBService.instance.insertParticipant(user);
     }
 
     public  void createChannel(String channelName, String part1name, String part2name){
@@ -139,10 +139,10 @@ public class Content {
         if (part1name.equals(part2name))
             Config.instance.textArea.info(String.format(part1name + " and "+part2name+" are identical - cannot create channel on itself"));
 
-        Participant instanceFirstParticipant = DBService.instance.getOneParticipant(part1name);
-        Participant instanceSecondParticipant = DBService.instance.getOneParticipant(part2name);
+        User instanceFirstUser = DBService.instance.getOneParticipant(part1name);
+        User instanceSecondUser = DBService.instance.getOneParticipant(part2name);
 
-        Channel channel = new Channel(channelName, instanceFirstParticipant, instanceSecondParticipant);
+        Channel channel = new Channel(channelName, instanceFirstUser, instanceSecondUser);
         Config.instance.textArea.info(String.format("channel " + channelName + " from "+ part1name + " to "+part2name+" successfully created"));
 
         DBService.instance.insertChannel(channel);
@@ -152,7 +152,7 @@ public class Content {
 
         //StringBuilder returnString = new StringBuilder();
 
-        channelList.stream().map(channel -> String.format(channel.getName() + " | " + channel.getParticipantA().getName() + " and " + channel.getParticipantB().getName())).forEach(Config.instance.textArea::info);
+        channelList.stream().map(channel -> String.format(channel.getName() + " | " + channel.getUserA().getName() + " and " + channel.getUserB().getName())).forEach(Config.instance.textArea::info);
         if (!channelList.isEmpty()) {
             return;
         }
@@ -177,7 +177,7 @@ public class Content {
 
 
     public void intrudeChannel(String channelName, String participant){
-        Participant intruder = DBService.instance.getOneParticipant(participant);
+        User intruder = DBService.instance.getOneParticipant(participant);
 
         if (intruder == null){
             Config.instance.textArea.info(String.format("intruder "+participant+" could not be found"));
@@ -196,8 +196,8 @@ public class Content {
 
 
     public void sendMessage(String message, String sender, String recipient, AlgorithmUsed algorithmUsed, String strKeyFile){
-        Participant senderPart = DBService.instance.getOneParticipant(sender);
-        Participant receiverPart = DBService.instance.getOneParticipant(recipient);
+        User senderPart = DBService.instance.getOneParticipant(sender);
+        User receiverPart = DBService.instance.getOneParticipant(recipient);
         Channel channel = DBService.instance.getChannel(sender, recipient);
         Date currentDate = new Date();
         long timestampLong = currentDate.getTime()/1000;
@@ -210,7 +210,7 @@ public class Content {
         String encrypted = encrypt(message, algorithmUsed, strKeyFile);
 
         Message dbMessage = new Message(senderPart, receiverPart, algorithmUsed.toString().toLowerCase(Locale.ROOT), strKeyFile, timestamp, message, encrypted);
-        channel.send(new BusMessage(encrypted, senderPart, receiverPart, algorithmUsed, strKeyFile));
+        channel.send(new MessageEventBus(encrypted, senderPart, receiverPart, algorithmUsed, strKeyFile));
 
         DBService.instance.insertMessage(dbMessage);
         Config.instance.textArea.info(recipient + " received new Message");

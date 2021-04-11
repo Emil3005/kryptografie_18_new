@@ -4,19 +4,20 @@
  * All rights reserved
  */
 
-package db.models;
+package db.models.message;
 
 import config.AlgorithmUsed;
+import db.models.user.User;
 
-public class BusMessage {
+public class MessageEventBus {
 
     private String message;
-    private Participant sender;
-    private Participant recipient;
+    private User sender;
+    private User recipient;
     private AlgorithmUsed algorithm;
     private String keyFile;
 
-    public BusMessage(String message, Participant sender, Participant recipient, AlgorithmUsed algorithm, String keyFile){
+    public MessageEventBus(String message, User sender, User recipient, AlgorithmUsed algorithm, String keyFile){
         this.message = message;
         this.sender = sender;
         this.recipient = recipient;
@@ -28,11 +29,11 @@ public class BusMessage {
         return message;
     }
 
-    public Participant getSender() {
+    public User getSender() {
         return sender;
     }
 
-    public Participant getRecipient() {
+    public User getRecipient() {
         return recipient;
     }
 

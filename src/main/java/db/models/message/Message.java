@@ -4,20 +4,22 @@
  * All rights reserved
  */
 
-package db.models;
+package db.models.message;
+
+import db.models.user.User;
 
 public class Message {
-    private final Participant participantSender;
-    private final Participant participantReceiver;
+    private final User userSender;
+    private final User userReceiver;
     private final String algorithm;
     private final String keyFile;
     private final String timestamp;
     private final String plainMessage;
     private final String encryptedMessage;
 
-    public Message(Participant participantSender, Participant participantReceiver, String algorithm, String keyFile, String timestamp, String plainMessage, String encryptedMessage){
-        this.participantSender = participantSender;
-        this.participantReceiver = participantReceiver;
+    public Message(User userSender, User userReceiver, String algorithm, String keyFile, String timestamp, String plainMessage, String encryptedMessage){
+        this.userSender = userSender;
+        this.userReceiver = userReceiver;
         this.algorithm = algorithm;
         this.keyFile = keyFile;
         this.timestamp = timestamp;
@@ -25,12 +27,12 @@ public class Message {
         this.encryptedMessage = encryptedMessage;
     }
 
-    public Participant getParticipantSender(){
-        return this.participantSender;
+    public User getUserSender(){
+        return this.userSender;
     }
 
-    public Participant getParticipantReceiver(){
-        return this.participantReceiver;
+    public User getUserReceiver(){
+        return this.userReceiver;
     }
 
     public String getAlgorithm() {
