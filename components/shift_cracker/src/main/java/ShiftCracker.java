@@ -22,13 +22,13 @@ public class ShiftCracker {
         if (encryptedMessage.equals("")) {
             System.exit(0);
         }
+        String source = encryptedMessage.trim().toUpperCase();
+        char[] sourceText = new char[source.length()];
+        int[] unicode = new int[source.length()];
+        int[] unicodeCopy = new int[source.length()];
 
-        char[] sourceText = new char[encryptedMessage.length()];
-        int[] unicode = new int[encryptedMessage.length()];
-        int[] unicodeCopy = new int[encryptedMessage.length()];
-
-        for (int count = 0; count < encryptedMessage.length(); count++) {
-            sourceText[count] = encryptedMessage.charAt(count);
+        for (int count = 0; count < source.length(); count++) {
+            sourceText[count] = source.charAt(count);
         }
 
         String hex;
@@ -52,7 +52,7 @@ public class ShiftCracker {
 
     public class Port {
         public String decrypt(String encryptedMessage) {
-            return decrypt(encryptedMessage);
+            return ShiftCracker.this.decrypt(encryptedMessage);
         }
     }
 
