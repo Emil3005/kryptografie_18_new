@@ -76,7 +76,7 @@ public class GUI extends Application {
             public void handle(final KeyEvent keyEvent)
             {
                 if(keyEvent.getCode() == KeyCode.F3){
-                    Config.instance.loggingHandler.switchHandlerForLogging();
+                    Config.instance.loggingHandler.switchHandler();
                 } else if(keyEvent.getCode() == KeyCode.F8) {
                     loadLogfile(outputArea);
                 } else if(keyEvent.getCode().equals(KeyCode.F5)){

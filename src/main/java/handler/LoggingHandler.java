@@ -16,22 +16,7 @@ public class LoggingHandler {
         enabled = false;
     }
 
-
-
-    public void switchHandlerForLogging(){
-        if (!enabled) {
-            enabled = true;
-            Config.instance.textArea.info("Logging has been enabled");
-        } else {
-            enabled = false;
-            if (handler != null){
-                logger.removeHandler(handler);
-            }
-            Config.instance.textArea.info("Logging has been disabled");
-        }
-    }
-
-    public void createLogfile(String algorithmType, String direction) {
+     public void createLogfile(String algorithmType, String direction) {
         if (!enabled) {
             return;
         }
@@ -39,16 +24,30 @@ public class LoggingHandler {
             logger.removeHandler(handler);
         }
         try {
-            handler = new FileHandler(String.format("log/%s_%s_%d.txt", direction, algorithmType, new Date().getTime() / 1000));
+            long date = new Date().getTime() / 1000;
+            handler = new FileHandler(String.format("log/"+ direction +"_"+ algorithmType +"_"+ date +".txt"));
             handler.setFormatter(new SimpleFormatter());
             handler.setLevel(Level.FINE);
             logger.addHandler(handler);
         } catch (IOException e) {
-            Config.instance.textArea.info("Error occurred during logFile creation");
+            Config.instance.textArea.info("It seems an Error occurred during logFile creation");
         }
     }
 
     public Logger getLogger(){
         return logger;
+    }
+
+    public void switchHandler(){
+        if (!enabled) {
+            enabled = true;
+            Config.instance.textArea.info("Logging is enabled");
+        } else {
+            enabled = false;
+            if (handler != null){
+                logger.removeHandler(handler);
+            }
+            Config.instance.textArea.info("Logging is disabled");
+        }
     }
 }
